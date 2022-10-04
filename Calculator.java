@@ -5,7 +5,7 @@ public class Calculator {
     Stack<Character> valStack;
 
     // Constructor create two stacks
-    private Calculator(){
+    public Calculator(){
         Stack<Character> opStack = new Stack<>();
         Stack<Character> valStack = new Stack<>();
         this.opStack = opStack;
