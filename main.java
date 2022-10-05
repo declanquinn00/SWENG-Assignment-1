@@ -21,7 +21,7 @@ public class main{
                 System.out.println("Quitting...");
             }
             else{
-                calc.equate(response);  // Send String response to logic function - return numerical answer as string
+                System.out.println(calc.equate(response));  // Send String response to logic function - return numerical answer as string
             }
         }
         input.close();
