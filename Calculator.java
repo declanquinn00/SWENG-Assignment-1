@@ -15,15 +15,11 @@ public class Calculator {
         this.valStack = valStack;
     }
 
-
     public String equate(String input){
         // read string
-        for(int i = 0; i <= input.length()-1; i++){
-            char val = input.charAt(i);
-            pushToStacks(val);
-        }
-        // 
-        return input; // RETURN A STRING REPRESENTATION OF ANSWER
+        int result = evaluatePostfix(input);
+        String resultString = "" + result;
+        return resultString; // RETURN A STRING REPRESENTATION OF ANSWER
 
     }
 
@@ -31,13 +27,15 @@ public class Calculator {
     public void toArray(String input){
         String tmp = "";
         for(int i = 0; i <= input.length()-1; i++){
+            // if op add operator to list
             if(isOperator(input.charAt(i))){
                 tmp += input.charAt(i);
                 array.add(tmp);
                 tmp = "";
             }
+            // if number add number to list
             else{
-                while(!isOperator(input.charAt(i))){
+                while(!isOperator(input.charAt(i)) && !isSpace(input.charAt(i))){
                     tmp += input.charAt(i);
                     i++;
                 }
@@ -49,7 +47,7 @@ public class Calculator {
 
     // Checks if passed String is a boolean
     public Boolean isOperator(String op){
-        if(op.equalsIgnoreCase("+") || op.equalsIgnoreCase("-") || op.equalsIgnoreCase("X") || op.equalsIgnoreCase("/")){
+        if(op.equalsIgnoreCase("+") || op.equalsIgnoreCase("-") || op.equalsIgnoreCase("*") || op.equalsIgnoreCase("/")){
             return true;
         }
         else return false;
@@ -57,7 +55,15 @@ public class Calculator {
 
     // Checks if passed char is a boolean
     public Boolean isOperator(char op){
-        if(op == '+' || op == '-' || op == 'X' || op == '/'){
+        if(op == '+' || op == '-' || op == '*' || op == '/'){
+            return true;
+        }
+        else return false;
+    }
+    
+ // Checks if passed char is a space
+    public Boolean isSpace(char op){
+        if(op == ' '){
             return true;
         }
         else return false;
@@ -66,7 +72,7 @@ public class Calculator {
     public void pushToStacks(Character op){
         try{
         // Check if operator
-        if(op == '+' || op == '-' || op == 'X' || op == '/'){
+        if(op == '+' || op == '-' || op == '*' || op == '/'){
             opStack.push(op);
         }
         // Else push to valStack
@@ -83,7 +89,7 @@ public class Calculator {
         int operand1;
         int operand2;
 
-        for(int i=0; i<=array.size(); i++){
+        for(int i=0; i<=array.size()-1; i++){
             String value = array.get(i);
             if(!isOperator(value)){
                 int dvalue = Integer.parseInt(value);
@@ -104,7 +110,7 @@ public class Calculator {
                         valStack.push(result);
                         break;
 
-                    case "X":
+                    case "*":
                         operand2 = valStack.pop();
                         operand1 = valStack.pop();
                         result = operand1 * operand2;
