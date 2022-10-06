@@ -19,7 +19,7 @@ public class Calculator {
         // read string
         int result = evaluatePostfix(input);
         String resultString = "" + result;
-        return resultString; // RETURN A STRING REPRESENTATION OF ANSWER
+        return resultString; // RETURN A STRING REPRESENTATION OF ANSWER 
 
     }
 
