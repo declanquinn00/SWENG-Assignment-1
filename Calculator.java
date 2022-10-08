@@ -9,20 +9,18 @@ public class Calculator {
     public Calculator(){
         Stack<String> opStack = new Stack<>();
         Stack<Integer> valStack = new Stack<>();
-        ArrayList<String> array = new ArrayList<String>();
-        this.array = array;
         this.opStack = opStack;
         this.valStack = valStack;
     }
 
     public String equate(String input){
         // read string
-        int result = evaluatePostfix(input);
+        int result = evaluateInfix(input);
         String resultString = "" + result;
         return resultString; // RETURN A STRING REPRESENTATION OF ANSWER 
 
     }
-
+/*
     // Convert string to arrayList
     public void toArray(String input){
         String tmp = "";
@@ -39,12 +37,38 @@ public class Calculator {
                     tmp += input.charAt(i);
                     i++;
                 }
+                
                 array.add(tmp);
                 tmp = "";
             }
         }
     }
-
+*/
+    // Convert string to arrayList
+    public void toArray(String input){
+    	this.array = new ArrayList<String>();
+        String tmp = "";
+        for(int i = 0; i <= input.length()-1; i++){
+            // if op add operator to list
+            if(isOperator(input.charAt(i)) && input.charAt(i)!=' '){
+                tmp += input.charAt(i);
+                array.add(tmp);
+                tmp = "";
+            }
+            // if number add number to list
+            else if(input.charAt(i)!=' '){
+                while(i<input.length() && !isOperator(input.charAt(i)) && !isSpace(input.charAt(i))){
+                    tmp += input.charAt(i);
+                    i++;
+                }
+                if(i<input.length() && isOperator(input.charAt(i))) {
+                	i--; // TEMP FIX
+                }
+                array.add(tmp);
+                tmp = "";
+            }
+        }
+    }
     // Checks if passed String is a boolean
     public Boolean isOperator(String op){
         if(op.equalsIgnoreCase("+") || op.equalsIgnoreCase("-") || op.equalsIgnoreCase("*") || op.equalsIgnoreCase("/")){
@@ -83,13 +107,13 @@ public class Calculator {
     }
 
     // Evaluates infix expression by converting to postfix
-    public void evaluateInfix(String infix){
+    public Integer evaluateInfix(String infix){
         toArray(infix);
         String output = "";
         String value;
         String tmp;
         Boolean first = true;
-        for(int i=0; i<array.size()-1; i++){
+        for(int i=0; i<=array.size()-1; i++){
             value = array.get(i);
             // If "(" push onto operator stack
             if(value.equalsIgnoreCase("(")){
@@ -106,7 +130,7 @@ public class Calculator {
             // If operator run check
             else if(isOperator(value)){
                 // If first value add to stack
-                if(opStack.peek()!=null){  // first?
+                if(opStack.empty()){  // first?
                     opStack.push(value);
                     first = false;
                 }
@@ -121,10 +145,16 @@ public class Calculator {
             }
             // If operand add to string
             else{
-                output += value;
+                output += value + " ";
             }
         }
+        while(!opStack.isEmpty()) {
+        	tmp = "";
+        	tmp = opStack.pop();
+        	output += tmp + " ";
+        }
         System.out.println("Testing output:" + output);
+        return evaluatePostfix(output);
 
         
     }
