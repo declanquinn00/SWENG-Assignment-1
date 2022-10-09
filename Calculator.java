@@ -13,37 +13,14 @@ public class Calculator {
         this.valStack = valStack;
     }
 
+    // returns string output of solved input
     public String equate(String input){
-        // read string
         int result = evaluateInfix(input);
         String resultString = "" + result;
         return resultString; // RETURN A STRING REPRESENTATION OF ANSWER 
 
     }
-/*
-    // Convert string to arrayList
-    public void toArray(String input){
-        String tmp = "";
-        for(int i = 0; i <= input.length()-1; i++){
-            // if op add operator to list
-            if(isOperator(input.charAt(i))){
-                tmp += input.charAt(i);
-                array.add(tmp);
-                tmp = "";
-            }
-            // if number add number to list
-            else{
-                while(!isOperator(input.charAt(i)) && !isSpace(input.charAt(i))){
-                    tmp += input.charAt(i);
-                    i++;
-                }
-                
-                array.add(tmp);
-                tmp = "";
-            }
-        }
-    }
-*/
+
     // Convert string to arrayList
     public void toArray(String input){
     	this.array = new ArrayList<String>();
@@ -62,7 +39,7 @@ public class Calculator {
                     i++;
                 }
                 if(i<input.length() && isOperator(input.charAt(i))) {
-                	i--; // TEMP FIX
+                	i--; 
                 }
                 array.add(tmp);
                 tmp = "";
@@ -112,7 +89,6 @@ public class Calculator {
         String output = "";
         String value;
         String tmp;
-        Boolean first = true;
         for(int i=0; i<=array.size()-1; i++){
             value = array.get(i);
             // If "(" push onto operator stack
@@ -121,7 +97,7 @@ public class Calculator {
             }
             // If ")" pop off items until "("
             else if(value.equalsIgnoreCase(")")){
-                while(opStack.peek()!="("){ // !!
+                while(opStack.peek()!="("){
                     tmp = opStack.pop();
                     output += tmp;
                 }
@@ -130,15 +106,17 @@ public class Calculator {
             // If operator run check
             else if(isOperator(value)){
                 // If first value add to stack
-                if(opStack.empty()){  // first?
+                if(opStack.empty()){  
                     opStack.push(value);
-                    first = false;
                 }
                 // If operator has greater prescedence than top of stack pop off top of stack and push operator
                 else{
                     String top = opStack.peek();
-                    while(opPrecedenceGreaterOrEqual(top, value)){
-                        output += opStack.pop();
+                    while(!opStack.empty() && opPrecedenceGreaterOrEqual(top, value)){
+                        output += opStack.pop() + " ";
+                        if(!opStack.empty()) {
+                        	top = opStack.peek();
+                        }
                     }
                     opStack.push(value);
                 }
@@ -153,7 +131,7 @@ public class Calculator {
         	tmp = opStack.pop();
         	output += tmp + " ";
         }
-        System.out.println("Testing output:" + output);
+        //System.out.println("Testing output:" + output);
         return evaluatePostfix(output);
 
         
