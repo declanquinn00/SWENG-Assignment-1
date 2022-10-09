@@ -1,9 +1,4 @@
 
-name: CIWorkFlowTest
-
-on: 
-  push:
-   branches: [ UI ]
 
 jobs: 
   CIWorkFlowTest:
@@ -23,3 +18,4 @@ jobs:
         
       - name: Run tests with Maven
         run: mvn -B test --file pom.xml
+
