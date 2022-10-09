@@ -133,7 +133,7 @@ public class Calculator {
         	tmp = opStack.pop();
         	output += tmp + " ";
         }
-        System.out.println("Testing output:" + output);
+        // System.out.println("Testing output:" + output);
         return evaluatePostfix(output);
         
     }
