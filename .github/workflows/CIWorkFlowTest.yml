@@ -1,7 +1,9 @@
 
 name: CIWorkFlowTest
 
-on: push
+on: 
+  push:
+   branches: [ UI ]
 
 jobs: 
   CIWorkFlowTest:
