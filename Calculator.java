@@ -12,15 +12,17 @@ public class Calculator {
         this.opStack = opStack;
         this.valStack = valStack;
     }
-
-    // returns string output of solved input
+    
+ // returns string output of solved input
     public String equate(String input){
-        int result = evaluateInfix(input);
+        try {
+    	int result = evaluateInfix(input);
         String resultString = "" + result;
-        return resultString; // RETURN A STRING REPRESENTATION OF ANSWER 
+        return resultString; 
+        } catch(java.lang.Exception e) {return "Invalid input please try again";}
 
     }
-
+    
     // Convert string to arrayList
     public void toArray(String input){
     	this.array = new ArrayList<String>();
@@ -48,7 +50,7 @@ public class Calculator {
     }
     // Checks if passed String is a boolean
     public Boolean isOperator(String op){
-        if(op.equalsIgnoreCase("+") || op.equalsIgnoreCase("-") || op.equalsIgnoreCase("*") || op.equalsIgnoreCase("/")){
+        if(op.equalsIgnoreCase("+") || op.equalsIgnoreCase("-") || op.equalsIgnoreCase("*") || op.equalsIgnoreCase("/") || op.equalsIgnoreCase("(") || op.equalsIgnoreCase(")")){
             return true;
         }
         else return false;
@@ -56,7 +58,7 @@ public class Calculator {
 
     // Checks if passed char is a boolean
     public Boolean isOperator(char op){
-        if(op == '+' || op == '-' || op == '*' || op == '/'){
+        if(op == '+' || op == '-' || op == '*' || op == '/' || op =='(' || op ==')'){
             return true;
         }
         else return false;
@@ -73,7 +75,7 @@ public class Calculator {
     public void pushToStacks(String op){
         try{
         // Check if operator
-        if(op == "+" || op == "-" || op == "*" || op == "/"){
+        if(op.equalsIgnoreCase("+") || op.equalsIgnoreCase("-") || op.equalsIgnoreCase("*") || op.equalsIgnoreCase("/") || op.equalsIgnoreCase("(") || op.equalsIgnoreCase(")")){
             opStack.push(op);
         }
         // Else push to valStack
@@ -97,7 +99,7 @@ public class Calculator {
             }
             // If ")" pop off items until "("
             else if(value.equalsIgnoreCase(")")){
-                while(opStack.peek()!="("){
+                while(!opStack.peek().equalsIgnoreCase("(") || opStack.isEmpty()){
                     tmp = opStack.pop();
                     output += tmp;
                 }
@@ -106,7 +108,7 @@ public class Calculator {
             // If operator run check
             else if(isOperator(value)){
                 // If first value add to stack
-                if(opStack.empty()){  
+                if(opStack.empty()){
                     opStack.push(value);
                 }
                 // If operator has greater prescedence than top of stack pop off top of stack and push operator
@@ -131,9 +133,8 @@ public class Calculator {
         	tmp = opStack.pop();
         	output += tmp + " ";
         }
-        //System.out.println("Testing output:" + output);
+        System.out.println("Testing output:" + output);
         return evaluatePostfix(output);
-
         
     }
 
